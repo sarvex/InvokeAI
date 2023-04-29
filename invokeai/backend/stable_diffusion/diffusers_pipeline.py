@@ -657,8 +657,6 @@ class StableDiffusionGeneratorPipeline(StableDiffusionPipeline):
             else:
                 latent_control_input = latent_model_input
             # controlnet inference
-
-            print("control_weight: ", control_weight)
             down_block_res_samples, mid_block_res_sample = self.control_model(
                 latent_control_input,
                 timestep,
@@ -1002,7 +1000,6 @@ class StableDiffusionGeneratorPipeline(StableDiffusionPipeline):
         dtype=torch.float16,
         do_classifier_free_guidance=True,
     ):
-
         if not isinstance(image, torch.Tensor):
             if isinstance(image, PIL.Image.Image):
                 image = [image]
