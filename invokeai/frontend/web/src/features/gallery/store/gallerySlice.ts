@@ -2,18 +2,18 @@ import type { PayloadAction } from '@reduxjs/toolkit';
 import { createSlice } from '@reduxjs/toolkit';
 import { Image } from 'app/types/invokeai';
 import { imageReceived, thumbnailReceived } from 'services/thunks/image';
+import {
+  receivedResultImagesPage,
+  receivedUploadImagesPage,
+} from '../../../services/thunks/gallery';
 
 type GalleryImageObjectFitType = 'contain' | 'cover';
 
 export interface GalleryState {
-  /**
-   * The selected image
-   */
   selectedImage?: Image;
   galleryImageMinimumWidth: number;
   galleryImageObjectFit: GalleryImageObjectFitType;
   shouldAutoSwitchToNewImages: boolean;
-  galleryWidth: number;
   shouldUseSingleGalleryColumn: boolean;
   currentCategory: 'results' | 'uploads';
 }
@@ -22,7 +22,6 @@ export const initialGalleryState: GalleryState = {
   galleryImageMinimumWidth: 64,
   galleryImageObjectFit: 'cover',
   shouldAutoSwitchToNewImages: true,
-  galleryWidth: 300,
   shouldUseSingleGalleryColumn: false,
   currentCategory: 'results',
 };
@@ -54,9 +53,6 @@ export const gallerySlice = createSlice({
     ) => {
       state.currentCategory = action.payload;
     },
-    setGalleryWidth: (state, action: PayloadAction<number>) => {
-      state.galleryWidth = action.payload;
-    },
     setShouldUseSingleGalleryColumn: (
       state,
       action: PayloadAction<boolean>
@@ -86,6 +82,34 @@ export const gallerySlice = createSlice({
         state.selectedImage.thumbnail = thumbnailPath;
       }
     });
+    builder.addCase(receivedResultImagesPage.fulfilled, (state, action) => {
+      // rehydrate selectedImage URL when results list comes in
+      // solves case when outdated URL is in local storage
+      const selectedImage = state.selectedImage;
+      if (selectedImage) {
+        const selectedImageInResults = action.payload.items.find(
+          (image) => image.image_name === selectedImage.name
+        );
+        if (selectedImageInResults) {
+          selectedImage.url = selectedImageInResults.image_url;
+          state.selectedImage = selectedImage;
+        }
+      }
+    });
+    builder.addCase(receivedUploadImagesPage.fulfilled, (state, action) => {
+      // rehydrate selectedImage URL when results list comes in
+      // solves case when outdated URL is in local storage
+      const selectedImage = state.selectedImage;
+      if (selectedImage) {
+        const selectedImageInResults = action.payload.items.find(
+          (image) => image.image_name === selectedImage.name
+        );
+        if (selectedImageInResults) {
+          selectedImage.url = selectedImageInResults.image_url;
+          state.selectedImage = selectedImage;
+        }
+      }
+    });
   },
 });
 
@@ -94,7 +118,6 @@ export const {
   setGalleryImageMinimumWidth,
   setGalleryImageObjectFit,
   setShouldAutoSwitchToNewImages,
-  setGalleryWidth,
   setShouldUseSingleGalleryColumn,
   setCurrentCategory,
 } = gallerySlice.actions;
