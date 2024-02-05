@@ -49,7 +49,7 @@ dependencies = [
   "einops",
   "eventlet",
   "facexlib",
-  "fastapi==0.88.0",
+  "fastapi==0.109.1",
   "fastapi-events==0.8.0",
   "fastapi-socketio==0.0.10",
   "flask==2.1.3",
