@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: check python version
-        uses: samuelcolvin/check-python-version@v4
+        uses: samuelcolvin/check-python-version@v5
         id: check-python-version
         with:
           version_file_path: invokeai/version/invokeai_version.py
