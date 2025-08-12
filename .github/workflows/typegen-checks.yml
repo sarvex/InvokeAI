@@ -37,7 +37,7 @@ jobs:
     timeout-minutes: 15 # expected run time: <5 min
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: check for changed files
         if: ${{ inputs.always_run != true }}
