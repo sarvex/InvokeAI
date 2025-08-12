@@ -12,7 +12,7 @@ jobs:
     timeout-minutes: 5 # expected run time: <2 min
     steps:
       - name: checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: setup python
         uses: actions/setup-python@v5
