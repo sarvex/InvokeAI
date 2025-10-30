@@ -64,7 +64,7 @@ dependencies = [
   "huggingface-hub==0.26.1",
   "pydantic-settings==2.2.1",
   "pydantic==2.7.2",
-  "python-socketio==5.11.1",
+  "python-socketio==5.14.3",
   "uvicorn[standard]==0.28.0",
 
   # Auxiliary dependencies, pinned only if necessary.
